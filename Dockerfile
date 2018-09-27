@@ -23,9 +23,10 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
  && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 ### Ensure www-data (ID: 82) user exists
+### I have to modify user group id to 1000 (since I'm in a compose stack) ._.
 RUN set -x \
- && addgroup -g 82 -S www-data \
- && adduser -u 82 -D -S -G www-data www-data \
+ && addgroup -g 1000 -S www-data \
+ && adduser -u 1000 -D -S -G www-data www-data \
  && mkdir -p /app \
  && chown -R www-data:www-data /app
 
