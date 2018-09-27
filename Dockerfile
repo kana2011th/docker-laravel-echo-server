@@ -1,7 +1,5 @@
 FROM node:10.6-alpine
 
-USER root
-
 RUN apk add --update sqlite wget openssl \
  && apk add --update --no-cache --virtual .build-deps \
         binutils-gold \
@@ -22,19 +20,7 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
  && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
  && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-### Ensure www-data (ID: 82) user exists
-### I have to modify user group id to 1000 (since I'm in a compose stack) ._.
-RUN set -x \
- && addgroup -g 1000 -S www-data \
- && adduser -u 1000 -D -S -G www-data www-data \
- && mkdir -p /app \
- && chown -R www-data:www-data /app
-
 COPY laravel-echo-server.tmpl /etc/laravel-echo-server.tmpl
-
-USER www-data
-
-WORKDIR /app
 
 EXPOSE 6001
 
