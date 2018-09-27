@@ -24,5 +24,7 @@ COPY laravel-echo-server.tmpl /etc/laravel-echo-server.tmpl
 
 EXPOSE 6001
 
+WORKDIR /app
+
 CMD dockerize -no-overwrite -template /etc/laravel-echo-server.tmpl:/app/laravel-echo-server.json \
         /usr/local/bin/laravel-echo-server start
